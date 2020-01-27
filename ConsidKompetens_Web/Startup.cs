@@ -1,4 +1,8 @@
 using System.Text;
+using ConsidKompetens_Core.Interfaces;
+using ConsidKompetens_Data.Data;
+using ConsidKompetens_Services.DataServices;
+using ConsidKompetens_Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -31,36 +35,44 @@ namespace ConsidKompetens_Web
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddDbContext<UserDataContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("UserDataConnection")));
+
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
-            var appSettingsSection = Configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettingsSection);
-            var appSettings = appSettingsSection.Get<AppSettings>();
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services.AddScoped<IGetUserDataService, GetUserDataService>();
+
+            //var appSettingsSection = Configuration.GetSection("AppSettings");
+            //services.Configure<AppSettings>(appSettingsSection);
+            //var appSettings = appSettingsSection.Get<AppSettings>();
+            //var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
+            {
 
-            //services.AddAuthentication(x =>
-            //{
-            //    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //}).AddJwtBearer(x =>
-            //{
-            //    x.RequireHttpsMetadata = false;
-            //    x.SaveToken = true;
-            //    x.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        ValidateIssuerSigningKey = true,
-            //        IssuerSigningKey = new SymmetricSecurityKey(key),
-            //        ValidateIssuer = false,
-            //        ValidateAudience = false
-            //    };
-            //});
+                //services.AddAuthentication(x =>
+                //{
+                //    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                //    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                //}).AddJwtBearer(x =>
+                //{
+                //    x.RequireHttpsMetadata = false;
+                //    x.SaveToken = true;
+                //    x.TokenValidationParameters = new TokenValidationParameters
+                //    {
+                //        ValidateIssuerSigningKey = true,
+                //        IssuerSigningKey = new SymmetricSecurityKey(key),
+                //        ValidateIssuer = false,
+                //        ValidateAudience = false
+                //    };
+                //});
+            }
 
             services.AddControllersWithViews();
             //services.AddRazorPages();

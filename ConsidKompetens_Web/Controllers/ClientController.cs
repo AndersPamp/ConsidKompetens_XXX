@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
-using ConsidKompetens_Web.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using ConsidKompetens_Core.Models;
+using ConsidKompetens_Services.Interfaces;
+using ConsidKompetens_Web.Communications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -11,16 +15,17 @@ namespace ConsidKompetens_Web.Controllers
     public class ClientController : ControllerBase
     {
         private readonly ILogger _logger;
-        private readonly IDataProvider _data;
+        //private readonly IDataProvider _data;
+        private readonly IGetUserDataService _userDataService;
 
-        public ClientController(ILogger<ClientController> logger, IDataProvider data)
+        public ClientController(ILogger logger, IGetUserDataService userDataService)
         {
             _logger = logger;
-            _data = data;
+            _userDataService = userDataService;
         }
 
         // GET: api/Client
-        [Authorize]
+        
         [HttpGet]
         public IEnumerable<string> SpaPage()
         {
@@ -28,25 +33,64 @@ namespace ConsidKompetens_Web.Controllers
         }
 
         // GET: api/Client/5
+        [Authorize]
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public IActionResult Get(Guid id)
         {
-            return "value";
+            try
+            {
+                return Ok(new JsonResponse {Data =  _userDataService.GetUserByIdAsync(id).Result});
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new JsonResponse{Error = true, Message = e.Message});
+            }
+
+            ;
         }
 
         // POST: api/Client
+        [Authorize]
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<JsonResponse> Post([FromBody] EmployeeUserModel userModel)
         {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _userDataService.CreateNewUserAsync(userModel);
+                    return Created("", new JsonResponse{Data = userModel});
+                }
+                catch (Exception e)
+                {
+                    return BadRequest(new JsonResponse {Error = true, Message = e.Message});
+                }
+            }
+            else if (userModel == null)
+            {
+                try
+                {
+                    _userDataService.CreateNewUserAsync(new EmployeeUserModel());
+                    return new JsonResponse{Message = "An empty profile has been created"};
+                }
+                catch (Exception e)
+                {
+                    return BadRequest(new JsonResponse { Error = true, Message = e.Message });
+                }
+            }
+
+            return BadRequest(new JsonResponse{Error = true, Message = "Something went wrong"});
         }
 
         // PUT: api/Client/5
+        [Authorize]
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
         // DELETE: api/ApiWithActions/5
+        [Authorize]
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
