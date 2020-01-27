@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Contentful\Entities\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Collections" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ConsidKompetens_Core\ConsidKompetens_Core.csproj" />
+    <ProjectReference Include="..\ConsidKompetens_Data\ConsidKompetens_Data.csproj" />
+  </ItemGroup>
+
+</Project>
