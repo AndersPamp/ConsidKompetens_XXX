@@ -4,12 +4,10 @@ using System.Web.Mvc;
 using ConsidKompetens_Core.Models;
 using ConsidKompetens_Data.Data;
 using ConsidKompetens_Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using ModelState = System.Web.WebPages.Html.ModelState;
 
 namespace ConsidKompetens_Services.DataServices
 {
+    //[Authorize]
     public class GetUserDataService : IGetUserDataService
     {
         //var ctx = new ConsidKompetens_Data.Services.GetUserData();
@@ -20,7 +18,7 @@ namespace ConsidKompetens_Services.DataServices
         {
             _userDataContext = userDataContext;
         }
-
+        
         public async Task<EmployeeUserModel> GetUserByIdAsync(Guid id)
         {
             try
@@ -33,7 +31,7 @@ namespace ConsidKompetens_Services.DataServices
             }
 
         }
-
+        
         public async Task<EmployeeUserModel> EditUserByIdAsync(EmployeeUserModel userModel)
         {
             try

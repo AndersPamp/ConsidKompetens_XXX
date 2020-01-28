@@ -12,4 +12,8 @@
     <PackageReference Include="TypeGen" Version="2.4.8" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Icons\" />
+  </ItemGroup>
+
 </Project>

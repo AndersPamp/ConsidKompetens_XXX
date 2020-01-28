@@ -1,5 +1,3 @@
-using System.Text;
-using ConsidKompetens_Core.Interfaces;
 using ConsidKompetens_Data.Data;
 using ConsidKompetens_Services.DataServices;
 using ConsidKompetens_Services.Interfaces;
@@ -8,14 +6,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using ConsidKompetens_Web.Data;
-using ConsidKompetens_Web.Helpers;
-using ConsidKompetens_Web.Models;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 
 namespace ConsidKompetens_Web
 {
@@ -39,11 +34,11 @@ namespace ConsidKompetens_Web
                 options.UseSqlServer(
                     Configuration.GetConnectionString("UserDataConnection")));
 
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+                .AddApiAuthorization<IdentityUser, ApplicationDbContext>();
 
             services.AddScoped<IGetUserDataService, GetUserDataService>();
 

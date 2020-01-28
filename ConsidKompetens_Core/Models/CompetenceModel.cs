@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection.Metadata;
-using System.Text;
-
-namespace ConsidKompetens_Core.Models
+﻿namespace ConsidKompetens_Core.Models
 {
     public class CompetenceModel:BaseEntity
     {
