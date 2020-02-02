@@ -1,0 +1,46 @@
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+code {
+  color: #E01A76;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+/*---LoginMenu------------------------------*/
+.links{
+  font-size: 140%;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.links:hover{
+  text-decoration: underline;
+  font-weight: bolder;
+}
+
+/*---Home page -----------------------------*/
+.homeContainer{
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.homeImg{
+  height: 100%;
+  width: 100%;
+}
+
+.HomeInput{
+  position: absolute;
+  top: 20%;
+  width: 50%;
+  left: 25%;
+}
+
+
